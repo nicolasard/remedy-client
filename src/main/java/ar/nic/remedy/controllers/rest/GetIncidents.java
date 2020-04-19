@@ -1,8 +1,9 @@
 package ar.nic.remedy.controllers.rest;
 
 import ar.nic.remedy.dao.Incident;
+import ar.nic.remedy.services.IncidentsService;
 import ar.nic.remedy.wsclient.ClientConfiguration;
-import ar.nic.remedy.wsclient.service.IncidentsClient;
+import ar.nic.remedy.wsclient.clients.IncidentsClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +32,7 @@ public class GetIncidents {
     }
     @RequestMapping(method= RequestMethod.GET, path = "/")
     public @ResponseBody List<Incident> List() {
-        List<Incident> incidentList = new ArrayList<>();
-        IncidentsClient incidentsClient = new IncidentsClient(clientConfiguration);
-        incidentsClient.getIncidents();
-        return incidentList;
+        final IncidentsService incidentsService = new IncidentsService();
+        return incidentsService.getIncidents(clientConfiguration);
     }
 }
