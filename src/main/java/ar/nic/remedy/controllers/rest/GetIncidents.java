@@ -1,7 +1,9 @@
 package ar.nic.remedy.controllers.rest;
 
 import ar.nic.remedy.dao.Incident;
+import ar.nic.remedy.wsclient.ClientConfiguration;
 import ar.nic.remedy.wsclient.service.IncidentsClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +15,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/incidents")
 public class GetIncidents {
+
+    @Autowired
+    ClientConfiguration clientConfiguration; //TODO: This autowiring should be inside the wsclient package in the
+                                             // IncidentClient. It will be clear to reduce dependency from Controller.
+    
     @RequestMapping(method= RequestMethod.GET, path = "/test")
     public @ResponseBody List<Incident> ListTest() {
         List<Incident> incidentList = new ArrayList<>();
@@ -25,7 +32,7 @@ public class GetIncidents {
     @RequestMapping(method= RequestMethod.GET, path = "/")
     public @ResponseBody List<Incident> List() {
         List<Incident> incidentList = new ArrayList<>();
-        IncidentsClient incidentsClient = new IncidentsClient();
+        IncidentsClient incidentsClient = new IncidentsClient(clientConfiguration);
         incidentsClient.getIncidents();
         return incidentList;
     }
