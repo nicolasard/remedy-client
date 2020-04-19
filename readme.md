@@ -12,3 +12,7 @@ A simple web interface to track your remedy incidents using the BMC remedy SOAP 
 
 #### Improvements/feedback? 
 Always welcome. Please create an issue or conctact, all my contact information it's at https://nicolasard.github.io/
+
+
+#####
+This application uses Spring 2.2.5 for the backend. For the front end we are using Bootstrap with a layout of https://github.com/colorlibhq/AdminLTE
