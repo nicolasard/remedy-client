@@ -19,7 +19,7 @@ public class GetIncidents {
     @Autowired
     ClientConfiguration clientConfiguration; //TODO: This autowiring should be inside the wsclient package in the
                                              // IncidentClient. It will be clear to reduce dependency from Controller.
-    
+
     @RequestMapping(method= RequestMethod.GET, path = "/test")
     public @ResponseBody List<Incident> ListTest() {
         List<Incident> incidentList = new ArrayList<>();

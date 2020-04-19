@@ -1,5 +1,6 @@
 package ar.nic.remedy.wsclient.callbacks;
 
+import ar.nic.remedy.wsclient.ClientConfiguration;
 import ar.nic.remedy.wsclient.wsdl.AuthenticationInfo;
 import ar.nic.remedy.wsclient.wsdl.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +12,17 @@ import org.springframework.ws.soap.SoapHeader;
 import org.springframework.ws.soap.SoapMessage;
 
 import javax.xml.bind.*;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 
 import static javax.xml.bind.JAXBContext.newInstance;
 
 public class IncidentsClientCallback implements WebServiceMessageCallback {
 
-    @Autowired
-    @Value("${remedy.user}")
-    private String remedyUser;
+    private ClientConfiguration clientConfiguration;
 
-    @Autowired
-    @Value("${remedy.password}")
-    private String remedyPasswords;
+    public IncidentsClientCallback(ClientConfiguration clientConfiguration){
+        this.clientConfiguration = clientConfiguration;
+    }
 
     @Override
     public void doWithMessage(WebServiceMessage webServiceMessage) throws TransformerException {
@@ -33,8 +30,8 @@ public class IncidentsClientCallback implements WebServiceMessageCallback {
         SoapHeader soapHeader = ((SoapMessage)webServiceMessage).getSoapHeader();
         final ObjectFactory a = new ObjectFactory();
         AuthenticationInfo inf = new AuthenticationInfo();
-        inf.setUserName(remedyUser);
-        inf.setPassword(remedyPasswords);
+        inf.setUserName(clientConfiguration.getUser());
+        inf.setPassword(clientConfiguration.getPassword());
 
         JAXBContext context = null;
         try {

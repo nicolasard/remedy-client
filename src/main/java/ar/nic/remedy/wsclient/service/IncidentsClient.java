@@ -46,7 +46,7 @@ public class IncidentsClient extends WebServiceGatewaySupport {
         webServiceTemplate.setMarshaller(jaxb2MarshallerCMRETPERMTY());
         webServiceTemplate.setUnmarshaller(jaxb2MarshallerCMRETPERMTY());
         webServiceTemplate.setDefaultUri(clientConfiguration.getUrl()+"/arsys/services/ARService?server=host&webService=HPD_IncidentInterface_WS");
-        JAXBElement<GetListOutputMap> value =  (JAXBElement) webServiceTemplate.marshalSendAndReceive(a.createHelpDeskQueryListService(request),new IncidentsClientCallback());
+        JAXBElement<GetListOutputMap> value =  (JAXBElement) webServiceTemplate.marshalSendAndReceive(a.createHelpDeskQueryListService(request),new IncidentsClientCallback(clientConfiguration));
         return value.getValue();
     }
 
