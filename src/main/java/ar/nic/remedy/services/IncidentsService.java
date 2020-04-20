@@ -21,6 +21,9 @@ public class IncidentsService {
             Incident incident = new Incident();
             incident.setIncidentID(incidentws.getIncidentNumber());
             incident.setSummary(incidentws.getSummary());
+            incident.setStatus(incidentws.getStatus().value());
+            incident.setDate(incidentws.getReportedDate().toString());
+            incident.setUrgency(incidentws.getUrgency());
             incidentList.add(incident);
         }
         return incidentList;

@@ -35,7 +35,7 @@ public class IncidentsClient extends WebServiceGatewaySupport {
         GetListInputMap request = new GetListInputMap();
         request.setMaxLimit("100");
         request.setStartRecord("1");
-        request.setQualification("'Assigned Group ID' = \"SGP000000007414\"");
+        request.setQualification("'Assigned Group ID' = \"SGP000000007414\" and 'Status'!= \"Closed\" and 'Status' != \"Cancelled\"");
 
         final ObjectFactory a = new ObjectFactory();
         webServiceTemplate.setInterceptors(new IncidentClientInterceptor[]{new IncidentClientInterceptor()});
