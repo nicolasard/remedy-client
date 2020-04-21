@@ -31,22 +31,25 @@
         <tr>
             <td>{{incidentID}}</td>
             <td>{{status}}</td>
+            <td>{{assignedTo}}</td>
             <td>{{urgency}}</td>
             <td>{{date}}</td>
             <td>{{summary}}</td>
-            <td><button type="button" class="btn btn-block btn-outline-secondary btn-xs">More Info</button></td>
+            <td><button type="button" incidentPk="{{i}}" class="more-info btn btn-block btn-outline-secondary btn-xs" data-toggle="modal" data-target="#myModal">More Info</button></td>
         </tr>
     </script>
     <script>
         var table = document.getElementById('tableBody'),
         template = document.getElementById('template').innerHTML,
         rows = '';
+        incidentsData = [];
 
         $(document).ready(function() {
             console.log("Calling REST service for the incidents...");
             $.ajax({
                 url: "./incidents/"
             }).then(function(data) {
+                incidentsData = data;
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     console.log("Adding an incident",data[i]);
@@ -57,9 +60,19 @@
                         date: data[i]["date"],
                         status: data[i]["status"],
                         urgency: data[i]["urgency"],
+                        assignedTo: data[i]["assignedTo"],
                     });
                 }
                 $("#tableBody").html( rows );
+                $("#incidentsTable").show();
+                $("#waitingTable").hide();
+
+                $(".more-info").on("click", function (){
+                    console.log(incidentsData[$(this).attr("incidentPk")]);
+                    $("#IncidentNumber").html(incidentsData[$(this).attr("incidentPk")]["incidentID"]);
+                    $("#IncidentNotes").html(incidentsData[$(this).attr("incidentPk")]["notes"]);
+                });
+
             });
         });
 
@@ -68,6 +81,7 @@
                 return data[b] || '';
             });
         }
+
     </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -87,9 +101,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
-            <span class="brand-text font-weight-light">Incident Client</span>
+            <span class="brand-text font-weight-light">Remedy Client</span>
         </a>
 
         <!-- Sidebar -->
@@ -138,19 +150,43 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel"><span id="IncidentNumber"></span></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <span id="IncidentNotes"></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">All open tickets</h3>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
+                            <div id="waitingTable" class="card-body table-responsive p-0">
+                                <div class="d-flex justify-content-center align-items-center" style="height:100px;">
+                                    <i class="fas fa-2x fa-sync fa-spin"></i>
+                                </div>
+                            </div>
+                            <div id="incidentsTable" class="card-body table-responsive p-0" style="display:none">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                     <tr>
                                         <th>INC #</th>
                                         <th>Status</th>
+                                        <th>Assigned to</th>
                                         <th>Urgency</th>
                                         <th>Date</th>
                                         <th>Summary</th>
