@@ -18,12 +18,15 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     PasswordEncoder passwordEncoder;
 
     @Autowired
+    AppConfiguration appConfiguration;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder)
-                .withUser("user")
-                .password(passwordEncoder.encode("pass")).roles("USER");
+                .withUser(appConfiguration.getUser())
+                .password(passwordEncoder.encode(appConfiguration.getPassword())).roles("USER");
     }
 
     @Override
