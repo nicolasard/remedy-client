@@ -38,16 +38,34 @@
             <td><button type="button" incidentPk="{{i}}" class="more-info btn btn-block btn-outline-secondary btn-xs" data-toggle="modal" data-target="#myModal">More Info</button></td>
         </tr>
     </script>
+    <script type="text/template" id="KPItemplate">
+            <div class="row">
+                <div class="col-3">
+                    Total: {{totalIncidents}}<br>
+                    Critical: {{criticalIncidents}}<br>
+                    High: {{highIncidents}}<br>
+                    Medium: {{mediumIncidents}}<br>
+                    Low: {{lowIncidents}}<br>
+                </div>
+                <div class="col-9">
+                    <h3>2 days without incidents</h3>
+                    Life Average: 34 days<br>
+                    Older: 34 days<br>
+                </div>
+            </div>
+    </script>
+
     <script>
         var table = document.getElementById('tableBody'),
         template = document.getElementById('template').innerHTML,
+        KPItemplate = document.getElementById('KPItemplate').innerHTML,
         rows = '';
         incidentsData = [];
 
         $(document).ready(function() {
             console.log("Calling REST service for the incidents...");
             $.ajax({
-                url: "./incidents/"
+                url: "./incidents/test"
             }).then(function(data) {
                 incidentsData = data;
                 console.log(data);
@@ -63,6 +81,7 @@
                         assignedTo: data[i]["assignedTo"],
                     });
                 }
+
                 $("#tableBody").html( rows );
                 $("#incidentsTable").show();
                 $("#waitingTable").hide();
@@ -72,6 +91,10 @@
                     $("#IncidentNumber").html(incidentsData[$(this).attr("incidentPk")]["incidentID"]);
                     $("#IncidentNotes").html(incidentsData[$(this).attr("incidentPk")]["notes"]);
                 });
+
+                $("#KPIBody").html(getHTML(KPItemplate, {
+                    totalIncidents: data.length
+                }));
 
             });
         });
@@ -132,6 +155,7 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
+
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark">Incident List</h1>
@@ -168,7 +192,17 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div id="KPIBody" class="card-body">
+                                <div class="d-flex justify-content-center align-items-center" style="height:100px;">
+                                    <i class="fas fa-2x fa-sync fa-spin"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">

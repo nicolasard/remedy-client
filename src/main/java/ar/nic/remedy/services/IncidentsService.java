@@ -22,7 +22,7 @@ public class IncidentsService {
             incident.setSummary(incidentws.getSummary());
             incident.setStatus(incidentws.getStatus().value());
             incident.setDate(incidentws.getReportedDate().toString());
-            incident.setUrgency(incidentws.getUrgency());
+            //incident.setUrgency(incidentws.getUrgency());
             incident.setAssignedTo(incidentws.getAssignee());
             incident.setNotes(incidentws.getNotes());
             incidentList.add(incident);

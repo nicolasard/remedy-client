@@ -5,7 +5,7 @@ public class Incident {
     private String Summary;
     private String Status;
     private String Date;
-    private String Urgency;
+    private UrgencyType Urgency;
     private String AssignedTo;
     private String Notes;
 
@@ -41,14 +41,6 @@ public class Incident {
         Date = date;
     }
 
-    public String getUrgency() {
-        return Urgency;
-    }
-
-    public void setUrgency(String urgency) {
-        Urgency = urgency;
-    }
-
     public String getAssignedTo() {
         return AssignedTo;
     }
@@ -63,5 +55,13 @@ public class Incident {
 
     public void setNotes(String notes) {
         Notes = notes;
+    }
+
+    public UrgencyType getUrgency() {
+        return Urgency;
+    }
+
+    public void setUrgency(UrgencyType urgency) {
+        Urgency = urgency;
     }
 }
