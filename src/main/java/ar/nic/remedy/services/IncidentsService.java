@@ -1,6 +1,7 @@
 package ar.nic.remedy.services;
 
 import ar.nic.remedy.dao.Incident;
+import ar.nic.remedy.dao.UrgencyType;
 import ar.nic.remedy.wsclient.ClientConfiguration;
 import ar.nic.remedy.wsclient.clients.IncidentsClient;
 import ar.nic.remedy.wsclient.wsdl.GetListOutputMap;
@@ -22,7 +23,7 @@ public class IncidentsService {
             incident.setSummary(incidentws.getSummary());
             incident.setStatus(incidentws.getStatus().value());
             incident.setDate(incidentws.getReportedDate().toString());
-            //incident.setUrgency(incidentws.getUrgency());
+            incident.setUrgency(UrgencyType.getByRemedyString(incidentws.getUrgency()));
             incident.setAssignedTo(incidentws.getAssignee());
             incident.setNotes(incidentws.getNotes());
             incidentList.add(incident);

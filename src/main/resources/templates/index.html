@@ -48,7 +48,7 @@
                     Low: {{lowIncidents}}<br>
                 </div>
                 <div class="col-9">
-                    <h3>2 days without incidents</h3>
+                    <h3>2 days without open incidents</h3>
                     Life Average: 34 days<br>
                     Older: 34 days<br>
                 </div>
@@ -61,11 +61,12 @@
         KPItemplate = document.getElementById('KPItemplate').innerHTML,
         rows = '';
         incidentsData = [];
+        incidentsDataKPI = {total:0,critical:0,high:0,medium:0,low:0};
 
         $(document).ready(function() {
             console.log("Calling REST service for the incidents...");
             $.ajax({
-                url: "./incidents/test"
+                url: "./incidents/"
             }).then(function(data) {
                 incidentsData = data;
                 console.log(data);
@@ -80,6 +81,19 @@
                         urgency: data[i]["urgency"],
                         assignedTo: data[i]["assignedTo"],
                     });
+                    incidentsDataKPI.total++;
+                    if(data[i]["urgency"] == "CRITICAL"){
+                        incidentsDataKPI.critical++;
+                    }
+                    if(data[i]["urgency"] == "HIGH"){
+                        incidentsDataKPI.high++;
+                    }
+                    if(data[i]["urgency"] == "MEDIUM"){
+                        incidentsDataKPI.medium++;
+                    }
+                    if(data[i]["urgency"] == "LOW"){
+                        incidentsDataKPI.low++;
+                    }
                 }
 
                 $("#tableBody").html( rows );
@@ -92,8 +106,13 @@
                     $("#IncidentNotes").html(incidentsData[$(this).attr("incidentPk")]["notes"]);
                 });
 
+                console.log(incidentsDataKPI);
                 $("#KPIBody").html(getHTML(KPItemplate, {
-                    totalIncidents: data.length
+                    totalIncidents: incidentsDataKPI.total,
+                    criticalIncidents: incidentsDataKPI.critical,
+                    highIncidents: incidentsDataKPI.high,
+                    mediumIncidents: incidentsDataKPI.medium,
+                    lowIncidents: incidentsDataKPI.low
                 }));
 
             });
