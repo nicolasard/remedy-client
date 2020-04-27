@@ -6,6 +6,9 @@
 A simple web interface to track your remedy incidents using the BMC remedy SOAP API. (https://docs.bmc.com/docs/itsm81/integrating-229802318.html) 
 
 #### How to run the app
+
+Download the last .jar binary compiled from:
+
 You just need to run
 ```shell
 java -jar remedy-client-1.0-SNAPSHOT.jar

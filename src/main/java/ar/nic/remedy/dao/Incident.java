@@ -1,11 +1,14 @@
 package ar.nic.remedy.dao;
 
+import java.util.Date;
+
 public class Incident {
     private String IncidentID;
     private String Summary;
     private String Status;
-    private String Date;
+    private Date date;
     private UrgencyType Urgency;
+    private Integer lifeDays;
     private String AssignedTo;
     private String Notes;
 
@@ -33,13 +36,6 @@ public class Incident {
         Status = status;
     }
 
-    public String getDate() {
-        return Date;
-    }
-
-    public void setDate(String date) {
-        Date = date;
-    }
 
     public String getAssignedTo() {
         return AssignedTo;
@@ -63,5 +59,21 @@ public class Incident {
 
     public void setUrgency(UrgencyType urgency) {
         Urgency = urgency;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Integer getLifeDays() {
+        return lifeDays;
+    }
+
+    public void setLifeDays(Integer lifeDays) {
+        this.lifeDays = lifeDays;
     }
 }

@@ -7,8 +7,15 @@ import ar.nic.remedy.wsclient.clients.IncidentsClient;
 import ar.nic.remedy.wsclient.wsdl.GetListOutputMap;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class IncidentsService {
@@ -22,7 +29,15 @@ public class IncidentsService {
             incident.setIncidentID(incidentws.getIncidentNumber());
             incident.setSummary(incidentws.getSummary());
             incident.setStatus(incidentws.getStatus().value());
-            incident.setDate(incidentws.getReportedDate().toString());
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'").parse(incidentws.getReportedDate().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date today = new Date();
+            incident.setDate(date);
+            incident.setLifeDays((int) TimeUnit.DAYS.convert(Math.abs(today.getTime() - date.getTime()),TimeUnit.MILLISECONDS));
             incident.setUrgency(UrgencyType.getByRemedyString(incidentws.getUrgency()));
             incident.setAssignedTo(incidentws.getAssignee());
             incident.setNotes(incidentws.getNotes());
